@@ -19,12 +19,16 @@ const createUser = async (req, res) => {
 
     const salt = 10;
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const newUser = new User({
+    const payload = {
       name: req.body.name,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
-    });
+    };
+    if (req.body.role) {
+      payload.role = req.body.role;
+    }
+    const newUser = new User(payload);
 
     const user = await newUser.save();
 
@@ -35,6 +39,7 @@ const createUser = async (req, res) => {
         name: user.name,
         username: user.username,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
