@@ -25,6 +25,7 @@ const login = async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      role: user.role,
     },
     jwt: token,
   });

@@ -3,8 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dbConnection = require("./database/db");
 const authRoute = require("./routes/auth");
-const protectedRoute = require("./routes/api");
-const verifyToken = require("./middleware/auth");
+const userRoute = require("./routes/user");
+const adminRoute = require("./routes/admin");
+const authenticate = require("./middleware/authentication");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -21,7 +22,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRoute);
-app.use("/api", verifyToken, protectedRoute);
+app.use("/user", authenticate, userRoute);
+app.use("/admin", authenticate, adminRoute);
+
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
